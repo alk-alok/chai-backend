@@ -240,6 +240,21 @@ const changeCurrentPassword = asyncHandler (async (req, res)=>{
 
 })
 
+const getCurrentUser = asyncHandler (async (req, res)=>{
+    /*
+        // Maybe this also work.....I will change it in future
+        const user = await User.findById(req.user?._id)
+    
+        return res.status(200).json(
+            new ApiResponse(200, user, "Current User fetched Successfully!")
+        )
+        */
+    
+        return res.status(200).json(
+            new ApiResponse(200, req.user, "Current User Fteched Successfully!")
+        )
+    })
+
 export {
     registerUser, 
     loginUser, 
