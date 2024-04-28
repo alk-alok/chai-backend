@@ -155,8 +155,8 @@ const logoutUser = asyncHandler (async (req, res)=>{
     await User.findByIdAndUpdate(
         req.user._id,
         {
-            $set: {
-                refreshToken: undefined
+            $unset: {
+                refreshToken: 1
             }
         },
         {
@@ -175,7 +175,7 @@ const logoutUser = asyncHandler (async (req, res)=>{
 })
 
 const refressAccessToken = asyncHandler ( async (req, res)=>{
-    const incomingRefreshToken = cookie.refreshToken || req.body.refreshToken
+    const incomingRefreshToken = req.cookies.refreshToken || req.body.refreshToken
 
     if(!incomingRefreshToken){
         throw new ApiError(401, "Unothorized request!")
@@ -223,7 +223,7 @@ const changeCurrentPassword = asyncHandler (async (req, res)=>{
 
     const user = await User.findById(req.user?._id)
 
-    const oldPasswordVerify = await User.isPasswordCorrect(oldPassword)
+    const oldPasswordVerify = await user.isPasswordCorrect(oldPassword)
 
     if(!oldPasswordVerify)
     {
